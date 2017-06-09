@@ -1,3 +1,3 @@
-class JSONAble:
-    def toDict():
+class Dictable:
+    def toDict(self):
         raise NotImplementedError
