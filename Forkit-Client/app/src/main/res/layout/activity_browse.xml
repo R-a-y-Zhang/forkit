@@ -5,5 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="mobile.forkit.forkit_client.browse.BrowseActivity">
-
+    <fragment
+        android:id="@+id/browse_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>
