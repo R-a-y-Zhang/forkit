@@ -1,1 +1,1 @@
-from algos import haversine
+from test import testloader

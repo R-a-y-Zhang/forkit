@@ -1,8 +1,8 @@
 from flask import Flask, request
 from models.user import User, Preferences
-from models.venue import Venue, Review
 from db import dbutils as db
-from apis import foursquare
+from data import oracle as o
+import json
 
 app = Flask(__name__)
 
@@ -46,7 +46,10 @@ def get_utp():
 
 @app.route('/browse', methods=['GET'])
 def browse_restaurants():
-    pass
+    args = request.args
+    return json.dumps(list(map(lambda r: r.toDict(),
+                               o.find_nearby(args.get('address'),
+                                             args.get('radius')))))
 
 @app.route('/new_gs', methods=['POST'])
 def new_group():

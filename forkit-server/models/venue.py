@@ -1,7 +1,7 @@
 import json
-from utils import jsonutils as ju
+from models.model import Dictable
 
-class Photo:
+class Photo(Dictable):
     def __init__(self):
         self.author = ''
         self.author_url = ''
@@ -10,7 +10,7 @@ class Photo:
         self.width = 0
         self.height = 0
 
-    def toJSON(self):
+    def toDict(self):
         return {
             'author': self.author,
             'photo_prefix': self.photo_prefix,
@@ -19,7 +19,7 @@ class Photo:
             'height': self.height
         }
 
-class Review:
+class Review(Dictable):
     def __init__(self):
         self.author = ''
         self.author_url = ''
@@ -27,7 +27,7 @@ class Review:
         self.time = -1
         self.text = ''
 
-    def toJSON(self): # () -> string
+    def toDict(self): # () -> string
         return {
             'author': self.author,
             'author_url': self.author_url,
@@ -36,7 +36,7 @@ class Review:
             'text': self.text
         }
 
-class Venue:
+class Venue(Dictable):
     def __init__(self):
         self.id = ''
         self.venue_name = ''
@@ -56,7 +56,7 @@ class Venue:
         self.hours = {}
         self.reviews = []
 
-    def toJSON(self): # () -> string
+    def toDict(self): # () -> string
         return {
             'id': self.id,
             'venue_name': self.venue_name,
@@ -73,7 +73,7 @@ class Venue:
             'rating': self.rating,
             'price': self.price,
             'contacts': self.contacts,
-            'image_urls': list(map(lambda n: n.toJSON(), self.image_urls)),
+            'image_urls': list(map(lambda n: n.toDict(), self.image_urls)),
             'hours': self.hours,
-            'reviews': list(map(lambda n: n.toJSON(), self.reviews))
+            'reviews': list(map(lambda n: n.toDict(), self.reviews))
         }

@@ -2,6 +2,7 @@ import math
 from utils.reductions import reduce
 
 EARTH_RADIUS = 6372.8
+KM_OFFSET = 0.0075
 def haversine(latlng1, latlng2): # ((double,double), (double,double)) -> double
     phi1 = latlng1[0]
     phi2 = latlng2[0]
@@ -16,9 +17,8 @@ def haversine(latlng1, latlng2): # ((double,double), (double,double)) -> double
     return EARTH_RADIUS * 2 * math.atan2(math.sqrt(inner_sum), math.sqrt(1-inner_sum))
 
 def get_bounding_box(latlng, edge): # ((double, double), double) -> ((double, double), (double, double))
-    pass
-
-testLats = ((29.425856, -98.561619), (40.489427, -74.451804), (37.770383, -122.466525), (48.907846, -95.317017)) # Texas, NJ, California, Minnesotta
-d = 0.0075 # 1 km offset
-for testLat in testLats:
-    print(haversine(testLat, (testLat[0]+d, testLat[1]+d)))
+    kms = edge / (1000 * 2)
+    lloffset = math.sqrt(2*kms**2) * KM_OFFSET
+    nw = (latlng[0] + lloffset, latlng[1] - lloffset)
+    se = (latlng[0] - lloffset, latlng[1] + lloffset)
+    return (nw, se)
