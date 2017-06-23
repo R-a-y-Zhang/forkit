@@ -1,4 +1,4 @@
-package mobile.forkit.forkit_client.mainpage;
+package mobile.forkit.forkit_client;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
