@@ -21,10 +21,11 @@ collections = {
     USER_PREFERENCE_COLLECTION: user_pref_collection
 }
 
-def insert(coll, *documents): # (string, JSONAble) -> InsertOneResult/InsertManyResult
+def insert(coll, *documents): # (string, DictAble) -> InsertOneResult/InsertManyResult
+    print(len(documents))
     if len(documents) == 1:
-        return collections[coll].insert_one(documents[0].toJSON())
-    return collections[coll].insert_many(map(documents, lambda d: d.toJSON()))
+        return collections[coll].insert_one(documents[0].toDict())
+    return collections[coll].insert_many(map(lambda d: d.toDict(), documents))
 
 def query(coll, query, find_one=True): # (string, string:any, boolean?) -> Document/Cursor
     if find_one:
