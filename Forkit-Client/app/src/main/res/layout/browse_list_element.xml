@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/browse_list_eimage"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"/>
+    <TextView
+        android:id="@+id/browse_list_etitle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/browse_list_eimage"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:textSize="18dp"
+        android:layout_marginBottom="5dp"
+        android:text="Restaurant at the End of the Universe"/>
+    <TextView
+        android:id="@+id/browse_list_eaddr"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="12311 East Avenue of the Galatic Heroes, New Amsterdam, Amsterdam-upon-Hillsborough, NAN 00000"
+        android:layout_toRightOf="@id/browse_list_eimage"
+        android:layout_below="@id/browse_list_etitle"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"/>
+    <TextView
+        android:id="@+id/browse_list_ecategories"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="Futuristic, Galactic, Interstellar, Turkish"
+        android:gravity="center_vertical"
+        android:textSize="12dp"
+        android:layout_toRightOf="@id/browse_list_eimage"
+        android:layout_below="@id/browse_list_eaddr"/>
+    <TextView
+        android:id="@+id/browse_list_erating"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:text="5 stars"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/browse_list_eimage"
+        android:layout_below="@id/browse_list_ecategories"/>
+    <TextView
+        android:id="@+id/browse_list_eprice"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:text="very expensive"
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@id/browse_list_erating"
+        android:layout_below="@id/browse_list_ecategories" />
+</RelativeLayout>
