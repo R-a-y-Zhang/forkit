@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import mobile.forkit.forkit_client.models.Venue;
+import mobile.forkit.forkit_client.models.VenueMetadata;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -13,7 +14,10 @@ import retrofit2.http.Query;
 
 public interface ForkitBaseService {
     @GET("browse.json")
-    Observable<List<Venue>> getVenuesForLocation(@Query("lat") double lat,
-                                                 @Query("lng") double lng,
-                                                 @Query("r") double radius);
+    Observable<List<VenueMetadata>> getVenuesForLocation(@Query("lat") double lat,
+                                                         @Query("lng") double lng,
+                                                         @Query("radius") double radius);
+
+    @GET("venue.json")
+    Observable<Venue> getVenueById(@Query("id") String id);
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -19,6 +20,7 @@ import mobile.forkit.forkit_client.R;
 import mobile.forkit.forkit_client.apis.ForkitAPI;
 import mobile.forkit.forkit_client.browse.adapters.EateriesSearchListAdapter;
 import mobile.forkit.forkit_client.models.Venue;
+import mobile.forkit.forkit_client.models.VenueMetadata;
 import mobile.forkit.forkit_client.utils.LocationMonitor;
 
 public class EateriesSearchFragment extends Fragment {
@@ -38,9 +40,9 @@ public class EateriesSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_eateries_search, container, false);
         ButterKnife.bind(this, v);
-        adapter = new EateriesSearchListAdapter();
+        adapter = new EateriesSearchListAdapter(new ArrayList<>());
         browseSearchEateriesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        browseSearchEateriesList.setAdapter(adapter);
+        // browseSearchEateriesList.setAdapter(adapter);
         getEateriesNearLocation();
         return v;
     }
@@ -52,11 +54,23 @@ public class EateriesSearchFragment extends Fragment {
         ForkitAPI.getVenuesForLocation(lat, lng, 3000)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::loadToVenuesList, err -> Log.e(HANDLE, err.getMessage()));
+                .subscribe(vs -> {
+                    for (VenueMetadata v : vs) {
+                        Log.e(HANDLE, v.id);
+                    }
+                    loadToVenuesList(vs);
+                }, err -> Log.e(HANDLE + "0", err.getMessage()));
 
     }
 
-    private void loadToVenuesList(List<Venue> venues) {
-
+    private void loadToVenuesList(List<VenueMetadata> venueIds) {
+        for (VenueMetadata v : venueIds) {
+            ForkitAPI.getVenueById(v.id)
+                .subscribeOn(Schedulers.io()).doOnError(err -> Log.e(HANDLE + "1", err.getMessage()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .toList()
+                .toObservable()
+                .subscribe(adapter::addAll, err -> Log.e(HANDLE + "2", err.getMessage()));
+        }
     }
 }

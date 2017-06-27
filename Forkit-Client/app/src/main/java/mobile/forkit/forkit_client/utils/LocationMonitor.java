@@ -6,7 +6,14 @@ import android.location.LocationManager;
 import android.util.Log;
 
 public class LocationMonitor {
+    public static boolean debug = false;
     public static Location getLastKnownUserLocation (Context activity) {
+        if (debug) {
+            Location l = new Location("");
+            l.setLatitude(40.761471);
+            l.setLongitude(-73.977560);
+            return l;
+        }
         LocationManager locationManager = (LocationManager) activity.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         try {
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -19,5 +26,9 @@ public class LocationMonitor {
             Log.d("LOCATIONMONITOR", "Security Error: " + e.getMessage());
             return null;
         }
+    }
+
+    public static void setDebug(boolean debug) {
+        LocationMonitor.debug = debug;
     }
 }

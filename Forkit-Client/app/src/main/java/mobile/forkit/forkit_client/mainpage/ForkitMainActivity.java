@@ -1,12 +1,16 @@
 package mobile.forkit.forkit_client.mainpage;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import mobile.forkit.forkit_client.Init;
 import mobile.forkit.forkit_client.R;
+import mobile.forkit.forkit_client.browse.BrowseActivity;
 
 public class ForkitMainActivity extends AppCompatActivity {
 
@@ -23,5 +27,13 @@ public class ForkitMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forkit_main);
         ButterKnife.bind(this);
+        browseEateries.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Init.runDebugInit();
+                Intent browseIntent = new Intent(getApplicationContext(), BrowseActivity.class);
+                startActivity(browseIntent);
+            }
+        });
     }
 }
