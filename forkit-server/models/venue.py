@@ -36,9 +36,19 @@ class Review(Dictable):
             'text': self.text
         }
 
+class VenueMetadata(Dictable):
+    def __init__(self, id = ''):
+        self.id = id
+
+    def toDict(self):
+        return {
+            'id': self.id
+        }
+
 class Venue(Dictable):
     def __init__(self):
-        self.id = ''
+        self._id = ''
+        self.foursquareid = ''
         self.venue_name = ''
         self.categories = []
         self.lat = None
@@ -53,12 +63,13 @@ class Venue(Dictable):
         self.price = -1
         self.contacts = {}
         self.image_urls = []
-        self.hours = {}
+        self.hours = []
         self.reviews = []
 
     def toDict(self): # () -> string
         return {
-            'id': self.id,
+            '_id': self._id,
+            'foursquareid': self.foursquareid,
             'venue_name': self.venue_name,
             'categories': self.categories,
             'location': {

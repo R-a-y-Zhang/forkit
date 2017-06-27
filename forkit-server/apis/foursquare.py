@@ -1,6 +1,8 @@
 import requests, json
 from models.venue import Venue, Review, Photo
 from apis import google
+import random as rand
+import hashlib
 
 FOURSQUARE_KEY = 'IKYQTRR11WRM4BPYIIGLCBVRPV0QVHTFBSPJIG2K5P1NCU53'
 FOURSQUARE_SECRET = 'FY4WM5FN5E33PVH0VEAKC30X0BQNIGAHNIFHC4QX0U4HYIUB'
@@ -8,11 +10,17 @@ FOURSQUARE_SECRET = 'FY4WM5FN5E33PVH0VEAKC30X0BQNIGAHNIFHC4QX0U4HYIUB'
 FOURSQUARE_VENUE_SEARCH_URL = 'https://api.foursquare.com/v2/venues/search'
 FOURSQUARE_VENUE_DETAILS_URL = 'https://api.foursquare.com/v2/venues/'
 
+md5 = hashlib.md5()
+
 def append_key_secret(url): # (string) -> string
     return '{}&{}={}&{}={}&v=20170601'.format(url,
             'client_id', FOURSQUARE_KEY,
             'client_secret', FOURSQUARE_SECRET)
 
+idchars = [chr(ord('a') + i) for i in range(26)] + \
+          [chr(ord('A') + i) for i in range(26)] + \
+          [chr(ord('0') + i) for i in range(10)] + \
+          ['-', '_']
 contains = lambda j, k, d: (j[k] if k in j else d)
 
 def search_venues_for_latlng(latlng, radius): # (double[], double) -> Venue[]
@@ -25,7 +33,9 @@ def search_venues_for_latlng(latlng, radius): # (double[], double) -> Venue[]
     venues = []
     for v in fsvs:
         venue = Venue()
-        venue.id = v['id']
+        md5.update(v['id'].encode('utf-8'))
+        venue._id = md5.hexdigest() # hash that is passed on to client
+        venue.foursquareid = v['id'] # stored for easy data retrieval
         venue.venue_name = v['name']
         venue.contacts['phone'] = contains(v['contact'], 'phone', '')
         location = v['location']
@@ -41,7 +51,7 @@ def search_venues_for_latlng(latlng, radius): # (double[], double) -> Venue[]
     return venues
 
 def get_venue_details(venue): # (Venue) -> void
-    request_url = append_key_secret(FOURSQUARE_VENUE_DETAILS_URL + venue.id + '?')
+    request_url = append_key_secret(FOURSQUARE_VENUE_DETAILS_URL + venue.foursquareid + '?')
     print(request_url)
     r = requests.get(request_url)
     details = r.json()['response']['venue']

@@ -47,9 +47,25 @@ def get_utp():
 @app.route('/browse.json', methods=['GET'])
 def browse_restaurants():
     args = request.args
+    print(args)
+    if args.get('lat') and args.get('lng'):
+        data = json.dumps(list(map(lambda r: r.toDict(),
+                                   o.find_nearby_ll('{},{}'
+                                                    .format(args.get('lat'),
+                                                            args.get('lng')),
+                                                    args.get('radius')))))
+        print(data)
+        return data
     return json.dumps(list(map(lambda r: r.toDict(),
                                o.find_nearby(args.get('address'),
                                              args.get('radius')))))
+
+@app.route('/venue.json', methods=['GET'])
+def get_venue():
+    args = request.args
+    res = json.dumps(o.get_venue_with_id(args.get('id')))
+    print(res)
+    return res
 
 @app.route('/new_gs', methods=['POST'])
 def new_group():
