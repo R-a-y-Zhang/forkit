@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forkit.iml" filepath="$PROJECT_DIR$/.idea/modules/forkit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forkit_main.iml" filepath="$PROJECT_DIR$/.idea/modules/forkit_main.iml" group="forkit" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/forkit_test.iml" filepath="$PROJECT_DIR$/.idea/modules/forkit_test.iml" group="forkit" />
+    </modules>
+  </component>
+</project>
