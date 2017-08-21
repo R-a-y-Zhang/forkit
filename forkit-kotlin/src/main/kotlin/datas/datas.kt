@@ -1,21 +1,27 @@
 package datas
 
+import com.google.gson.annotations.SerializedName
+import javax.persistence.Entity
+
 /**
  * Created by rz187 on 7/24/17.
  */
 
 // USER DATA CLASSES
+@Entity
 data class DOB(
         val day: Int = 0,
         val month: Int = 0,
         val year: Int = 0
 )
 
+@Entity
 data class Preference(
         val preference: String = "",
         val rating: Float = -1f
 )
 
+@Entity
 data class User(
         val firstName: String = "",
         val lastName: String = "",
@@ -26,6 +32,7 @@ data class User(
 )
 
 // VENUE DATA CLASSES
+@Entity
 data class Photo(
         val id: String = "",
         val createdAt: Long = 0,
@@ -36,16 +43,19 @@ data class Photo(
         val visibility: String = ""
 )
 
+@Entity
 data class Photos(
         val groups: List<Photo> = ArrayList<Photo>()
 )
 
+@Entity
 data class ReviewUser(
         val id: String = "",
         val firstName: String = "",
         val lastName: String = ""
 )
 
+@Entity
 data class Review(
         val id: String = "",
         val user: ReviewUser = ReviewUser(),
@@ -55,13 +65,17 @@ data class Review(
         val text: String = ""
 )
 
+@Entity
 data class Group(
         val item: List<Review> = ArrayList<Review>()
 )
+
+@Entity
 data class Tips(
         val groups: List<Group> = ArrayList<Group>()
 )
 
+@Entity
 data class Location(
         val address: String = "",
         val city: String = "",
@@ -73,9 +87,18 @@ data class Location(
         val lng: Float = -1f
 )
 
+@Entity
 data class Contact(
         val phone: String
 )
+
+@Entity
+data class Meta(
+        val code: Int,
+        val requestId: String
+)
+
+@Entity
 data class Venue(
         val id: String = "",
         val name: String = "",
@@ -84,17 +107,66 @@ data class Venue(
         val location: Location = Location(),
         val rating: Float = -1f,
         val price: Int = -1,
-        val photos: Photos,
+        val photos: Photos = Photos(),
         val tips: Tips = Tips(),
-        val contact: Contact,
+        val contact: Contact = Contact(""),
         val hours: Map<String, Pair<Int, Int>> = HashMap<String, Pair<Int, Int>>()
 )
 
-// REQUEST CLASSES
-data class MultiResponse(
-        val response: Array<Venue>
+@Entity
+data class Venues(
+        val venues: List<Venue>
 )
 
+// LOCATIONS
+@Entity
+data class AddressComponent(
+        @SerializedName("short_name")
+        val shortName: String,
+        val types: List<String>
+)
+
+@Entity
+data class LatLng(
+        val lat: Double,
+        val lng: Double
+)
+
+@Entity
+data class ViewPort(
+        val northeast: LatLng,
+        val southwest: LatLng
+)
+
+@Entity
+data class LocationGeometry(
+        @SerializedName("location")
+        val ll: LatLng,
+        val viewport: ViewPort
+)
+
+@Entity
+data class AddressResult(
+        @SerializedName("address_components")
+        val addressComponents: List<AddressComponent>,
+        @SerializedName("formatted_address")
+        val formattedAddress: String,
+        val geometry: LocationGeometry
+)
+
+// REQUEST CLASSES
+@Entity
+data class MultipleVenues(
+        val meta: Meta,
+        val response: Venues
+)
+
+@Entity
 data class SingleResponse(
-        val reponse: Venue
+        val response: Venue
+)
+
+@Entity
+data class GeocodeResponse(
+        val results: List<AddressResult>
 )
