@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import sources.FoursquareAPI
+import sources.foursquareApi
 import sources.pullOrFetchForVenuesAtLatLng
 import sources.pullOrFetchForVenuesAtLocation
 import java.util.*
-import javax.swing.text.html.Option
 
 @RestController
 class PrimaryController {
@@ -43,9 +44,9 @@ class PrimaryController {
     }
 
     @GetMapping("/venueId")
-    fun getVenueWithId(@PathVariable id: String): Venue? {
-        if (id.isNullOrEmpty()) { return null }
-        return null
+    fun getVenueWithId(@RequestParam id: String): Venue {
+        if (id.isNullOrEmpty()) { return Venue() }
+        return foursquareApi.getVenueDetails(id).map { venue -> println(venue); venue.response.venue }.blockingFirst()
     }
 }
 

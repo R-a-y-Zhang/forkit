@@ -162,8 +162,14 @@ data class MultipleVenues(
 )
 
 @Entity
+data class VenueDetails(
+        val venue: Venue
+)
+
+@Entity
 data class SingleResponse(
-        val response: Venue
+        val meta: Meta,
+        val response: VenueDetails
 )
 
 @Entity

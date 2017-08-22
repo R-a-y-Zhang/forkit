@@ -13,6 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 val FOURSQUARE_KEY = "IKYQTRR11WRM4BPYIIGLCBVRPV0QVHTFBSPJIG2K5P1NCU53"
 val FOURSQUARE_SECRET = "FY4WM5FN5E33PVH0VEAKC30X0BQNIGAHNIFHC4QX0U4HYIUB"
@@ -63,8 +64,11 @@ interface FoursquareAPI {
                                @Query("client_secret") client_secret: String = FOURSQUARE_SECRET,
                                @Query("v") version: String = FOURSQUARE_VENUE_VERSION): Flowable<MultipleVenues>
 
-    @GET("")
-    fun getVenueDetails(@Query("id") id: String): Flowable<SingleResponse>
+    @GET
+    fun getVenueDetails(@Url id: String,
+                        @Query("client_id") client_id: String = FOURSQUARE_KEY,
+                        @Query("client_secret") client_secret: String = FOURSQUARE_SECRET,
+                        @Query("v") version: String = FOURSQUARE_VENUE_VERSION): Flowable<SingleResponse>
 }
 
 interface GoogleAPI {
