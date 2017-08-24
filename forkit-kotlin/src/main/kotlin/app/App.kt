@@ -1,7 +1,8 @@
 package app
 
 import datas.LatLng
-import datas.Venue
+import datas.VenueBasic
+import datas.VenueDetail
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -23,7 +24,7 @@ class PrimaryController {
     fun pong() = "pong"
 
     @GetMapping("/search")
-    fun getVenuesAroundLocation(@RequestParam("ll") ll: Optional<String>, @RequestParam("address") address: Optional<String>): List<String> {
+    fun getVenuesAroundLocation(@RequestParam("ll") ll: Optional<String>, @RequestParam("address") address: Optional<String>): List<VenueBasic> {
         if (!ll.isPresent && !address.isPresent) {
             return emptyList()
         }
@@ -31,21 +32,19 @@ class PrimaryController {
         if (ll.isPresent) {
             val latlng = ll.get().split(',')
             return pullOrFetchForVenuesAtLatLng(LatLng(latlng[0].toDouble(), latlng[1].toDouble()))
-                .map { venues ->
-                        venues.response.venues.map { v -> v.id }
-                }.blockingFirst()
+                    .map { response -> response.response.venues }
+                    .blockingFirst()
         } else if (address.isPresent) {
             return pullOrFetchForVenuesAtLocation(address.get())
-                .map { venues ->
-                        venues.response.venues.map { v -> v.id }
-                }.blockingFirst()
+                    .map { venues -> venues.response.venues }
+                    .blockingFirst()
         }
         return emptyList()
     }
 
     @GetMapping("/venueId")
-    fun getVenueWithId(@RequestParam id: String): Venue {
-        if (id.isNullOrEmpty()) { return Venue() }
+    fun getVenueWithId(@RequestParam id: String): VenueDetail {
+        if (id.isNullOrEmpty()) { return VenueDetail() }
         return foursquareApi.getVenueDetails(id).map { venue -> println(venue); venue.response.venue }.blockingFirst()
     }
 }

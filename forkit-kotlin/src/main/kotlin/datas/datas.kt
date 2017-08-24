@@ -32,22 +32,25 @@ data class User(
 )
 
 // VENUE DATA CLASSES
+// ********************** PHOTO OBJECTS *************************
+@Entity
+data class PhotoItem(
+        val id: String,
+        val prefix: String,
+        val suffix: String
+)
+
 @Entity
 data class Photo(
-        val id: String = "",
-        val createdAt: Long = 0,
-        val prefix: String = "",
-        val suffix: String = "",
-        val width: Int = 0,
-        val height: Int = 0,
-        val visibility: String = ""
+        val items: List<PhotoItem>
 )
 
 @Entity
 data class Photos(
         val groups: List<Photo> = ArrayList<Photo>()
 )
-
+////////////////////////////////////////////////////////////////
+// ********************* REVIEW OBJECTS ************************
 @Entity
 data class ReviewUser(
         val id: String = "",
@@ -59,22 +62,22 @@ data class ReviewUser(
 data class Review(
         val id: String = "",
         val user: ReviewUser = ReviewUser(),
-        val photo: Photo = Photo(),
         val canonicalUrl: String = "",
         val createdAt: Long = 0,
-        val text: String = ""
+        val text: String = "",
+        val type: String = ""
 )
 
 @Entity
-data class Group(
-        val item: List<Review> = ArrayList<Review>()
+data class Tip(
+        val items: List<Review> = ArrayList<Review>()
 )
 
 @Entity
 data class Tips(
-        val groups: List<Group> = ArrayList<Group>()
+        val groups: List<Tip> = ArrayList<Tip>()
 )
-
+/////////////////////////////////////////////////////////////////
 @Entity
 data class Location(
         val address: String = "",
@@ -93,29 +96,61 @@ data class Contact(
 )
 
 @Entity
+data class Category(
+        val name: String,
+        val shortName: String
+)
+
+@Entity
+data class Stats(
+        val usersCount: Int = -1,
+        val visitsCount: Int = -1
+)
+
+@Entity
+data class Price(
+        val tier: Int = -1,
+        val currency: String = ""
+)
+
+@Entity
+data class Likes(
+        val count: Int = -1
+)
+@Entity
 data class Meta(
         val code: Int,
         val requestId: String
 )
 
 @Entity
-data class Venue(
+data class VenueBasic(
         val id: String = "",
         val name: String = "",
-        val tags: List<String> = ArrayList<String>(),
         val utc: Int = -99,
         val location: Location = Location(),
         val rating: Float = -1f,
-        val price: Int = -1,
-        val photos: Photos = Photos(),
-        val tips: Tips = Tips(),
         val contact: Contact = Contact(""),
         val hours: Map<String, Pair<Int, Int>> = HashMap<String, Pair<Int, Int>>()
 )
 
+
+@Entity
+data class VenueDetail(
+        @SerializedName("categories")
+        val tags: List<Category> = ArrayList<Category>(),
+        val verified: Boolean = false,
+        val stat: Stats = Stats(),
+        val likes: Likes = Likes(),
+        val price: Price = Price(),
+        val photos: Photos = Photos(),
+        val tips: Tips = Tips()
+)
+// Merging basicVenue and VenueDetail
+
 @Entity
 data class Venues(
-        val venues: List<Venue>
+        val venues: List<VenueBasic>
 )
 
 // LOCATIONS
@@ -162,17 +197,19 @@ data class MultipleVenues(
 )
 
 @Entity
-data class VenueDetails(
-        val venue: Venue
+data class VenueDetailResponse(
+        val venue: VenueDetail
 )
 
 @Entity
 data class SingleResponse(
         val meta: Meta,
-        val response: VenueDetails
+        val response: VenueDetailResponse
 )
 
 @Entity
 data class GeocodeResponse(
         val results: List<AddressResult>
 )
+
+/********************** HELPER FUNCTIONS **********************/

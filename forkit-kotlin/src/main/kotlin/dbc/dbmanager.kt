@@ -2,7 +2,6 @@ package dbc
 
 import com.mongodb.MongoClient
 import com.mongodb.client.model.Filters.eq
-import datas.Venue
 import datas.VenueMetadata
 import org.bson.Document
 /*
