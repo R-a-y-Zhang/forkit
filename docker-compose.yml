@@ -1,0 +1,7 @@
+version: "3"
+services:
+  forkit:
+    build: .
+    network_mode: "host"
+    ports:
+        - "8080:8080"
