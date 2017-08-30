@@ -4,6 +4,7 @@ import datas.LatLng
 import datas.MultipleVenues
 import io.reactivex.Flowable
 
+/* Used by the RestControllers to draw data from various sources */
 fun queryDatabaseForVenuesAtLocation(ll: LatLng): Flowable<MultipleVenues> {
     return Flowable.just(null)
 }

@@ -16,19 +16,12 @@ data class DOB(
 )
 
 @Entity
-data class Preference(
-        val preference: String = "",
-        val rating: Float = -1f
-)
-
-@Entity
 data class User(
         val firstName: String = "",
         val lastName: String = "",
         val dob: DOB = DOB(),
         val email: String = "",
-        val phone: String = "",
-        val preferences: Map<String, Preference> = HashMap<String, Preference>()
+        val phone: String = ""
 )
 
 // VENUE DATA CLASSES
@@ -125,7 +118,9 @@ data class Meta(
 
 @Entity
 data class VenueBasic(
-        val id: String = "",
+        val id: String = "", // ID of venue as it appears in the database
+        @SerializedName("id")
+        val foursquareId: String = "", // Foursquare ID, duh
         val name: String = "",
         val utc: Int = -99,
         val location: Location = Location(),
